@@ -1,0 +1,30 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://assets/Wall_of_64_bricks.tscn" type="PackedScene" id=1]
+[ext_resource path="res://assets/Brick.tscn" type="PackedScene" id=2]
+
+[node name="Outer_walls" type="Spatial"]
+
+[node name="Wall_of_64_bricks1" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -65 )
+
+[node name="Wall_of_64_bricks2" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 65 )
+
+[node name="Wall_of_64_bricks3" parent="." instance=ExtResource( 1 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 65, 1, 0 )
+
+[node name="Wall_of_64_bricks" parent="." instance=ExtResource( 1 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -65, 1, 0 )
+
+[node name="Brick1" parent="." instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -65, 1, 65 )
+
+[node name="Brick2" parent="." instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 65, 1, -65 )
+
+[node name="Brick3" parent="." instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -65, 1, -65 )
+
+[node name="Brick4" parent="." instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 65, 1, 65 )

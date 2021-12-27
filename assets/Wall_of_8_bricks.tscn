@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://assets/Wall_of_4_bricks.tscn" type="PackedScene" id=1]
+
+[node name="Wall_of_8_bricks" type="Spatial"]
+
+[node name="Wall_of_4_bricks1" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 0 )
+
+[node name="Wall_of_4_bricks2" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0 )
