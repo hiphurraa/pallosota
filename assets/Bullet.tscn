@@ -10,7 +10,7 @@ albedo_color = Color( 1, 0, 0, 1 )
 [sub_resource type="SphereShape" id=3]
 
 [sub_resource type="CylinderShape" id=4]
-radius = 0.303354
+radius = 0.355445
 height = 0.327994
 
 [sub_resource type="SphereMesh" id=5]

@@ -1,6 +1,6 @@
 extends KinematicBody	
 
-var fall_speed = Vector3()
+var fall_velocity = Vector3()
 const GRAVITY = 9.81 * 10
 
 # MOVEMENT
@@ -23,35 +23,6 @@ func _ready():
 	pass
 	
 func _physics_process(delta):
-
-	# CAMERA
-	# ROTATE CAMERA LEFT
-	if Input.is_action_just_pressed("rotate_camera_left"):
-		if (cameraTargetAngle == 360):
-			$Camera_base.rotation_degrees.y = 0
-			cameraTargetAngle = 45
-		else:
-			cameraTargetAngle += 45
-	
-	# ROTATE CAMERA RIGHT		
-	if Input.is_action_just_pressed("rotate_camera_right"):
-		if (cameraTargetAngle == 0):
-			$Camera_base.rotation_degrees.y = 360
-			cameraTargetAngle = 315
-		else:
-			cameraTargetAngle -= 45
-		
-	# ZOOM
-	if Input.is_action_just_released("zoom_out"):
-		if(camera_zoom < CAMERA_MAX_ZOOM):
-			camera_zoom += camera_zoom/10
-	elif Input.is_action_just_released("zoom_in"):
-		if(camera_zoom > CAMERA_MIN_ZOOM):
-			camera_zoom -= camera_zoom/10
-		
-	$Camera_base.translation.y = lerp($Camera_base.translation.y, camera_zoom, 0.1)
-	$Camera_base.rotation_degrees.y = lerp($Camera_base.rotation_degrees.y, cameraTargetAngle, 0.1)
-	
 	
 	# PLAYER MOVEMENT
 	var dir = Vector3()
@@ -72,8 +43,6 @@ func _physics_process(delta):
 		inputMoveVector.y += 1
 	elif Input.is_action_pressed("move_down"):
 		inputMoveVector.y -= 1
-	else:
-		pass
 	
 	# LEFT AND RIGHT MOVEMENT
 	if Input.is_action_pressed("move_left") and Input.is_action_pressed("move_right"):
@@ -82,8 +51,6 @@ func _physics_process(delta):
 		inputMoveVector.x -= 1
 	elif Input.is_action_pressed("move_right"):
 		inputMoveVector.x += 1
-	else:
-		pass
 		
 		
 		
@@ -93,13 +60,13 @@ func _physics_process(delta):
 	dir += camera_dir.x * inputMoveVector.x
 	dir = dir.normalized()
 	if not is_on_floor():
-		fall_speed.y -= GRAVITY * delta
+		fall_velocity.y -= GRAVITY * delta
 	else:
-		fall_speed.y = 0
+		fall_velocity.y = 0
 
 	var moveDir = dir * speed
 	velocity = velocity.linear_interpolate(moveDir, ACCELERATION * delta)
-	velocity.y = fall_speed.y
+	velocity.y = fall_velocity.y
 	velocity = move_and_slide(velocity, Vector3.UP, 0.05, 4, 45)
 	
 	# BALL MESH ROTATION ACCORDING TO SPEED
@@ -109,11 +76,40 @@ func _physics_process(delta):
 	# SHOOTING
 	if Input.is_action_just_pressed("shoot"):
 		var bullet_instance = bullet_class.instance()
-		bullet_instance.init(camera_dir)
+		bullet_instance.init(camera_dir.z)
 		get_parent().add_child(bullet_instance)
 		bullet_instance.global_transform.origin.x = global_transform.origin.x
-		bullet_instance.global_transform.origin.y = global_transform.origin.y + 2
+		bullet_instance.global_transform.origin.y = global_transform.origin.y + 1.5
 		bullet_instance.global_transform.origin.z = global_transform.origin.z
+		
+		
+	# CAMERA
+	# ROTATE CAMERA LEFT
+	if Input.is_action_just_pressed("rotate_camera_left"):
+		if (cameraTargetAngle == 360):
+			$Camera_base.rotation_degrees.y = 0
+			cameraTargetAngle = 45
+		else:
+			cameraTargetAngle += 45
+	
+	# ROTATE CAMERA RIGHT
+	if Input.is_action_just_pressed("rotate_camera_right"):
+		if (cameraTargetAngle == 0):
+			$Camera_base.rotation_degrees.y = 360
+			cameraTargetAngle = 315
+		else:
+			cameraTargetAngle -= 45
+		
+	# ZOOM
+	if Input.is_action_just_released("zoom_out"):
+		if(camera_zoom < CAMERA_MAX_ZOOM):
+			camera_zoom += camera_zoom/10
+	elif Input.is_action_just_released("zoom_in"):
+		if(camera_zoom > CAMERA_MIN_ZOOM):
+			camera_zoom -= camera_zoom/10
+		
+	$Camera_base.translation.y = lerp($Camera_base.translation.y, camera_zoom, 0.1)
+	$Camera_base.rotation_degrees.y = lerp($Camera_base.rotation_degrees.y, cameraTargetAngle, 0.1)
 		
 
 
