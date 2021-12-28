@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://blender/enemy-material.material" type="Material" id=1]
+[ext_resource path="res://scripts/enemy.gd" type="Script" id=2]
 
 [sub_resource type="ArrayMesh" id=1]
 resource_name = "enemy_Cube"
@@ -23,11 +24,12 @@ radius = 1.90272
 [sub_resource type="SphereShape" id=3]
 radius = 2.0
 
-[sub_resource type="SphereShape" id=4]
+[sub_resource type="CylinderShape" id=4]
 radius = 4.0
 
 [node name="enemy" type="KinematicBody"]
 transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0 )
+script = ExtResource( 2 )
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
 mesh = SubResource( 1 )
@@ -44,4 +46,8 @@ shape = SubResource( 3 )
 [node name="Vision_area" type="Area" parent="."]
 
 [node name="CollisionShape" type="CollisionShape" parent="Vision_area"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.191812, 0 )
 shape = SubResource( 4 )
+
+[connection signal="body_entered" from="Vision_area" to="." method="_on_Vision_area_body_entered"]
+[connection signal="body_exited" from="Vision_area" to="." method="_on_Vision_area_body_exited"]

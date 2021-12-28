@@ -14,53 +14,64 @@ var time_passed = 0
 
 var rng = RandomNumberGenerator.new()
 
+func _on_Vision_area_body_entered(body):
+	move_up = false
+	move_down = false
+	move_left = false
+	move_right = false
+	var rnd = rng.randf_range(0, 8)
+	if rnd < 1:
+		move_up = true
+	elif rnd < 2:
+		move_down = true
+	elif rnd < 3:
+		move_left = true
+	elif rnd < 4:
+		move_right = true
+	elif rnd < 5:
+		move_up = true
+		move_right = true
+	elif rnd < 6:
+		move_right = true
+		move_down = true
+	elif rnd < 7:
+		move_down = true
+		move_left = true
+	else:
+		move_left = true
+		move_up = true
+
 func _ready():
-	pass
+	var rnd = rng.randf_range(0, 8)
+	if rnd < 1:
+		move_up = true
+	elif rnd < 2:
+		move_down = true
+	elif rnd < 3:
+		move_left = true
+	elif rnd < 4:
+		move_right = true
+	elif rnd < 5:
+		move_up = true
+		move_right = true
+	elif rnd < 6:
+		move_right = true
+		move_down = true
+	elif rnd < 7:
+		move_down = true
+		move_left = true
+	else:
+		move_left = true
+		move_up = true
 
 func _physics_process(delta):
-	
-	time_passed += delta
-	if time_passed > 2:
-		time_passed = 0
-		move_up = false
-		move_down = false
-		move_left = false
-		move_right = false
-		var rnd = rng.randf_range(0, 8)
-		if rnd < 1:
-			move_up = true
-		elif rnd < 2:
-			move_down = true
-		elif rnd < 3:
-			move_left = true
-		elif rnd < 4:
-			move_right = true
-		elif rnd < 5:
-			move_up = true
-			move_right = true
-		elif rnd < 6:
-			move_right = true
-			move_down = true
-		elif rnd < 7:
-			move_down = true
-			move_left = true
-		else:
-			move_left = true
-			move_up = true
-		
-		
-		
-	
+
 	# ENEMY MOVEMENT
 	var dir = Vector3()
 	var inputMoveVector = Vector2()
 	
 	# SPEED
 	var speed = NORMAL_SPEED
-	if Input.is_action_pressed("sprint"):
-		speed = SPRINT_SPEED
-	elif Input.is_action_pressed("sneak"):
-		speed = SNEAK_SPEED
 		
 	# UP AND DOWN MOVEMENT
 	if move_up and move_down:
