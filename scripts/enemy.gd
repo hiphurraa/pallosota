@@ -98,8 +98,8 @@ func _physics_process(delta):
 
 
 func _on_Collision_area_body_entered(body):
-	print("enemy collided with: " +  body.name)
-	if body.name == "bullet_explosion":
+	#print("enemy collided with: " +  body.name)
+	if body.name == "bullet_explosion" or body.name == "Player":
 		var bullet_location = body.global_transform.origin
 		var player_location = global_transform.origin
 		var dir = Vector3()

@@ -15,7 +15,7 @@ func _on_bullet_collision_area_body_entered(body):
 	if collided_with_my_self < SELF_COLLISIONS:
 		collided_with_my_self += 1
 	else:
-		print("Bullet collided with: " + body.name)
+		#print("Bullet collided with: " + body.name)
 		exploded = true
 		
 func _physics_process(delta):
