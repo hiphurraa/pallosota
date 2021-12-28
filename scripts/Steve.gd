@@ -16,6 +16,7 @@ const CAMERA_MIN_ZOOM = 15
 var cameraTargetAngle = 0.0
 # BULLER COLLISION
 const BOOM_SPEED = 120
+var bullet_class = load("res://assets/Bullet.tscn")
 
 
 func _ready():
@@ -40,6 +41,7 @@ func _physics_process(delta):
 		else:
 			cameraTargetAngle -= 45
 		
+	# ZOOM
 	if Input.is_action_just_released("zoom_out"):
 		if(camera_zoom < CAMERA_MAX_ZOOM):
 			camera_zoom += camera_zoom/10
@@ -103,6 +105,16 @@ func _physics_process(delta):
 	# BALL MESH ROTATION ACCORDING TO SPEED
 	$MeshInstance.rotate_z(deg2rad(-velocity.x))
 	$MeshInstance.rotate_x(deg2rad(velocity.z))
+	
+	# SHOOTING
+	if Input.is_action_just_pressed("shoot"):
+		var bullet_instance = bullet_class.instance()
+		bullet_instance.init(camera_dir)
+		get_parent().add_child(bullet_instance)
+		bullet_instance.global_transform.origin.x = global_transform.origin.x
+		bullet_instance.global_transform.origin.y = global_transform.origin.y + 2
+		bullet_instance.global_transform.origin.z = global_transform.origin.z
+		
 
 
 func _on_player_collision_area_body_entered(body):

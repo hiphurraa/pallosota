@@ -1,15 +1,20 @@
 extends KinematicBody
 
-
-func _ready():
-	pass
-
+const BULLET_SPEED = 100
 const EXPLOSION_SIZE = 8
 const SELF_COLLISIONS = 2
 var collided_with_my_self = 0
 var exploded = false
 var been_exploded_for = 0
 var shrink = false
+var velocity = Vector3(0, 0, 0)
+var fly_dir = null
+
+func _ready():
+	pass
+
+func init(dir):
+	fly_dir = dir
 
 func _on_bullet_collision_area_body_entered(body):
 	if collided_with_my_self < SELF_COLLISIONS:
@@ -19,6 +24,11 @@ func _on_bullet_collision_area_body_entered(body):
 		exploded = true
 		
 func _physics_process(delta):
+	
+	if fly_dir != null:
+		var direction = - fly_dir.z * BULLET_SPEED
+		velocity = velocity.linear_interpolate(direction, 100 * delta)
+		velocity = move_and_slide(velocity, Vector3.UP, 0.05, 4, 45)
 	
 	# BOOM
 	if exploded and !shrink:
