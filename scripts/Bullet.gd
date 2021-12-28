@@ -4,7 +4,7 @@ extends KinematicBody
 func _ready():
 	pass
 
-const EXPLOSION_SIZE = 10
+const EXPLOSION_SIZE = 8
 const SELF_COLLISIONS = 2
 var collided_with_my_self = 0
 var exploded = false
@@ -30,17 +30,17 @@ func _physics_process(delta):
 	
 	# SHRINKING
 	if exploded and shrink:
-		$bullet_explosion.scale.x = lerp($bullet_explosion.scale.x, 0, 0.5)
-		$bullet_explosion.scale.y = lerp($bullet_explosion.scale.y, 0, 0.5)
-		$bullet_explosion.scale.z = lerp($bullet_explosion.scale.z, 0, 0.5)
+		if (been_exploded_for > 0.1):
+			$bullet_explosion.scale.x = lerp($bullet_explosion.scale.x, 0, 0.5)
+			$bullet_explosion.scale.y = lerp($bullet_explosion.scale.y, 0, 0.5)
+			$bullet_explosion.scale.z = lerp($bullet_explosion.scale.z, 0, 0.5)
 		$MeshInstance.scale.x = 0
 		$MeshInstance.scale.y = 0
 		$MeshInstance.scale.z = 0
 		been_exploded_for += delta
+		if $bullet_explosion.scale.x < 0.05:
+			get_parent().remove_child(self)
 		
-	# REMOVE
-	if been_exploded_for > 0.2:
-		get_parent().remove_child(self)
 
 		
 		

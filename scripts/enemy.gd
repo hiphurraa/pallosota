@@ -12,7 +12,7 @@ var move_left = false
 var move_right = false
 var time_passed = 0
 
-const BOOM_SPEED = 150
+const BOOM_SPEED = 120
 
 var rng = RandomNumberGenerator.new()
 
@@ -111,7 +111,7 @@ func _physics_process(delta):
 
 func _on_Collision_area_body_entered(body):
 	print("enemy collided with: " +  body.name)
-	if body.name == "Bullet" or body.name == "bullet_explosion":
+	if body.name == "bullet_explosion":
 		var bullet_location = body.global_transform.origin
 		var player_location = global_transform.origin
 		var dir = Vector3()

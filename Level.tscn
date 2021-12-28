@@ -60,6 +60,6 @@ shadow_enabled = true
 transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 1, -53 )
 
 [node name="Bullet" parent="." instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 46.6468 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 1, 46.6468 )
 
 [connection signal="body_entered" from="Player/player_collision_area" to="Player" method="_on_player_collision_area_body_entered"]
