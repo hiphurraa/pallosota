@@ -1,15 +1,15 @@
 extends KinematicBody	
 
+# MOVEMENT
 var velocity = Vector3(0, 0, 0)
 const SNEAK_SPEED = 7
 const NORMAL_SPEED = 17
 const SPRINT_SPEED = 35
-const DIAGONAL_SCALE = 1.414
 const ACCELERATION = 5
+# CAMERA
 var camera_zoom = 30
 const CAMERA_MAX_ZOOM = 50
 const CAMERA_MIN_ZOOM = 15
-
 var cameraTargetAngle = 0.0
 
 
