@@ -1,10 +1,14 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scripts/Bullet.gd" type="Script" id=1]
 
 [sub_resource type="SphereMesh" id=2]
 
 [sub_resource type="SphereShape" id=3]
+
+[sub_resource type="CylinderShape" id=4]
+radius = 0.303354
+height = 0.327994
 
 [node name="Bullet" type="KinematicBody"]
 script = ExtResource( 1 )
@@ -17,3 +21,10 @@ material/0 = null
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0 )
 shape = SubResource( 3 )
+
+[node name="bullet_collision_area" type="Area" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="bullet_collision_area"]
+shape = SubResource( 4 )
+
+[connection signal="body_entered" from="bullet_collision_area" to="." method="_on_bullet_collision_area_body_entered"]
