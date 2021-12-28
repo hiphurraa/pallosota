@@ -45,11 +45,12 @@ func _physics_process(delta):
 	$Camera_base.translation.y = lerp($Camera_base.translation.y, camera_zoom, 0.1)
 	$Camera_base.rotation_degrees.y = lerp($Camera_base.rotation_degrees.y, cameraTargetAngle, 0.1)
 	
+	
+	# PLAYER MOVEMENT
 	var dir = Vector3()
 	var inputMoveVector = Vector2()
 	var camera_dir = $Camera_base.get_global_transform().basis
 	
-	# PLAYER MOVEMENT
 	# SPEED
 	var speed = NORMAL_SPEED
 	if Input.is_action_pressed("sprint"):
@@ -77,7 +78,7 @@ func _physics_process(delta):
 	else:
 		pass
 		
-		
+	# APPLY MOVEMENT
 	inputMoveVector = inputMoveVector.normalized()
 	dir += -camera_dir.z * inputMoveVector.y
 	dir += camera_dir.x * inputMoveVector.x
@@ -93,47 +94,3 @@ func _physics_process(delta):
 	# BALL MESH ROTATION ACCORDING TO SPEED
 	$MeshInstance.rotate_z(deg2rad(-velocity.x))
 	$MeshInstance.rotate_x(deg2rad(velocity.z))
-	# ACTUAL MOVEMENT
-	#move_and_slide(velocity)
-
-
-
-
-
-
-	
-
-func decelerate_x():
-	velocity.x = lerp(velocity.x, 0, ACCELERATION)
-#
-#func move_up(speed, is_original_event = true):
-#	velocity.z = lerp(velocity.z, -speed, ACCELERATION)
-#
-#func move_down(speed, is_original_event:bool = true):
-#	velocity.z = lerp(velocity.z, speed, ACCELERATION)
-#
-#func move_left(speed, is_original_event = true):
-#	velocity.x = lerp(velocity.x, -speed, ACCELERATION)
-#
-#func move_right(speed, is_original_event = true):
-#	velocity.x = lerp(velocity.x, speed, ACCELERATION)
-#
-#func move_up_and_right(speed, is_original_event = true):
-#	var diagonalSpeed = speed / DIAGONAL_SCALE
-#	velocity.z = lerp(velocity.z, -diagonalSpeed, ACCELERATION)
-#	velocity.x = lerp(velocity.x, diagonalSpeed, ACCELERATION)
-#
-#func move_right_and_down(speed, is_original_event = true):
-#	var diagonalSpeed = speed / DIAGONAL_SCALE
-#	velocity.x = lerp(velocity.x, diagonalSpeed, ACCELERATION)
-#	velocity.z = lerp(velocity.z, diagonalSpeed, ACCELERATION)
-#
-#func move_down_and_left(speed, is_original_event = true):
-#	var diagonalSpeed = speed / DIAGONAL_SCALE
-#	velocity.z = lerp(velocity.z, diagonalSpeed, ACCELERATION)
-#	velocity.x = lerp(velocity.x, -diagonalSpeed, ACCELERATION)
-#
-#func move_left_and_up(speed, is_original_event = true):
-#	var diagonalSpeed = speed / DIAGONAL_SCALE
-#	velocity.x = lerp(velocity.x, -diagonalSpeed, ACCELERATION)
-#	velocity.z = lerp(velocity.z, -diagonalSpeed, ACCELERATION)
