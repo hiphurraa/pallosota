@@ -17,34 +17,18 @@ const BOOM_SPEED = 120
 var rng = RandomNumberGenerator.new()
 
 func _on_Vision_area_body_entered(body):
+	choose_random_direction()
+
+func _ready():
+	choose_random_direction()
+	
+func choose_random_direction():
+	time_passed = 0
+	var rnd = rng.randf_range(0, 8)
 	move_up = false
 	move_down = false
 	move_left = false
 	move_right = false
-	var rnd = rng.randf_range(0, 8)
-	if rnd < 1:
-		move_up = true
-	elif rnd < 2:
-		move_down = true
-	elif rnd < 3:
-		move_left = true
-	elif rnd < 4:
-		move_right = true
-	elif rnd < 5:
-		move_up = true
-		move_right = true
-	elif rnd < 6:
-		move_right = true
-		move_down = true
-	elif rnd < 7:
-		move_down = true
-		move_left = true
-	else:
-		move_left = true
-		move_up = true
-
-func _ready():
-	var rnd = rng.randf_range(0, 8)
 	if rnd < 1:
 		move_up = true
 	elif rnd < 2:
@@ -67,6 +51,10 @@ func _ready():
 		move_up = true
 
 func _physics_process(delta):
+
+	time_passed += delta
+	if time_passed > 2:
+		choose_random_direction()
 
 	# ENEMY MOVEMENT
 	var dir = Vector3()
