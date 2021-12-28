@@ -21,24 +21,24 @@ func _physics_process(delta):
 	
 	# BOOM
 	if exploded and !shrink:
-		$bullet_explosion.scale.x = lerp($bullet_explosion.scale.x, 5, 0.5)
-		$bullet_explosion.scale.y = lerp($bullet_explosion.scale.y, 5, 0.5)
-		$bullet_explosion.scale.z = lerp($bullet_explosion.scale.z, 5, 0.5)
+		$bullet_explosion.scale.x = lerp($bullet_explosion.scale.x, 5, 0.3)
+		$bullet_explosion.scale.y = lerp($bullet_explosion.scale.y, 5, 0.3)
+		$bullet_explosion.scale.z = lerp($bullet_explosion.scale.z, 5, 0.3)
 		if $bullet_explosion.scale.x > 4.5:
 			shrink = true
 	
 	# SHRINKING
 	if exploded and shrink:
-		$bullet_explosion.scale.x = lerp($bullet_explosion.scale.x, 0, 0.2)
-		$bullet_explosion.scale.y = lerp($bullet_explosion.scale.y, 0, 0.2)
-		$bullet_explosion.scale.z = lerp($bullet_explosion.scale.z, 0, 0.2)
+		$bullet_explosion.scale.x = lerp($bullet_explosion.scale.x, 0, 0.5)
+		$bullet_explosion.scale.y = lerp($bullet_explosion.scale.y, 0, 0.5)
+		$bullet_explosion.scale.z = lerp($bullet_explosion.scale.z, 0, 0.5)
 		$MeshInstance.scale.x = 0
 		$MeshInstance.scale.y = 0
 		$MeshInstance.scale.z = 0
 		been_exploded_for += delta
 		
 	# REMOVE
-	if been_exploded_for > 0.1:
+	if been_exploded_for > 0.2:
 		get_parent().remove_child(self)
 
 		
