@@ -50,4 +50,3 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.191812, 0 )
 shape = SubResource( 4 )
 
 [connection signal="body_entered" from="Vision_area" to="." method="_on_Vision_area_body_entered"]
-[connection signal="body_exited" from="Vision_area" to="." method="_on_Vision_area_body_exited"]

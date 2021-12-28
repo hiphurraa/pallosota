@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://assets/Steve.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/Steve.gd" type="Script" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://textures/Grass004_1K-JPG/Grass004_1K_Color.jpg" type="Texture" id=4]
 [ext_resource path="res://assets/Game_walls.tscn" type="PackedScene" id=5]
 [ext_resource path="res://assets/enemy.tscn" type="PackedScene" id=6]
+[ext_resource path="res://assets/Bullet.tscn" type="PackedScene" id=7]
 
 [sub_resource type="BoxShape" id=3]
 extents = Vector3( 66, 1, 66 )
@@ -17,6 +18,8 @@ uv1_scale = Vector3( 7, 7, 7 )
 [sub_resource type="CubeMesh" id=5]
 material = SubResource( 4 )
 size = Vector3( 132, 2, 132 )
+
+[sub_resource type="SphereShape" id=6]
 
 [node name="Level" type="Spatial"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
@@ -42,6 +45,12 @@ transform = Transform( 1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 60, 0 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 environment = ExtResource( 3 )
 
+[node name="player_collision_area" type="Area" parent="Player"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Player/player_collision_area"]
+transform = Transform( 1.01, 0, 0, 0, 1.01, 0, 0, 0, 1.01, 0, 0, 0 )
+shape = SubResource( 6 )
+
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( -0.919965, -0.0715419, -0.385416, -0.391794, 0.199644, 0.898131, 0.012692, 0.977253, -0.211695, 0, 20.4069, -11.6451 )
 shadow_enabled = true
@@ -50,3 +59,8 @@ shadow_enabled = true
 
 [node name="enemy" parent="." instance=ExtResource( 6 )]
 transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 1, -53 )
+
+[node name="Bullet" parent="." instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 1, 49 )
+
+[connection signal="body_entered" from="Player/player_collision_area" to="Player" method="_on_player_collision_area_body_entered"]

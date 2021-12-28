@@ -11,6 +11,8 @@ var camera_zoom = 30
 const CAMERA_MAX_ZOOM = 50
 const CAMERA_MIN_ZOOM = 15
 var cameraTargetAngle = 0.0
+# BULLER COLLISION
+const BOOM_SPEED = 100
 
 
 func _ready():
@@ -94,3 +96,15 @@ func _physics_process(delta):
 	# BALL MESH ROTATION ACCORDING TO SPEED
 	$MeshInstance.rotate_z(deg2rad(-velocity.x))
 	$MeshInstance.rotate_x(deg2rad(velocity.z))
+
+
+func _on_player_collision_area_body_entered(body):
+	if body.name == "Bullet":
+		var bullet_location = body.global_transform.origin
+		var player_location = global_transform.origin
+		var dir = Vector3()
+		dir.x = player_location.x - bullet_location.x
+		dir.z = player_location.z - bullet_location.z
+		dir.y = 0
+		dir = dir.normalized()
+		velocity = dir * BOOM_SPEED
