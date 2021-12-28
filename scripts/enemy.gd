@@ -1,6 +1,5 @@
 extends KinematicBody
 
-# MOVEMENT
 var velocity = Vector3(0, 0, 0)
 const SNEAK_SPEED = 7
 const NORMAL_SPEED = 17
@@ -11,44 +10,20 @@ var move_down = false
 var move_left = false
 var move_right = false
 var time_passed = 0
-
 const BOOM_SPEED = 120
-
 var rng = RandomNumberGenerator.new()
+
+
 
 func _on_Vision_area_body_entered(body):
 	choose_random_direction()
 
+
+
 func _ready():
 	choose_random_direction()
-	
-func choose_random_direction():
-	time_passed = 0
-	var rnd = rng.randf_range(0, 8)
-	move_up = false
-	move_down = false
-	move_left = false
-	move_right = false
-	if rnd < 1:
-		move_up = true
-	elif rnd < 2:
-		move_down = true
-	elif rnd < 3:
-		move_left = true
-	elif rnd < 4:
-		move_right = true
-	elif rnd < 5:
-		move_up = true
-		move_right = true
-	elif rnd < 6:
-		move_right = true
-		move_down = true
-	elif rnd < 7:
-		move_down = true
-		move_left = true
-	else:
-		move_left = true
-		move_up = true
+
+
 
 func _physics_process(delta):
 
@@ -97,6 +72,7 @@ func _physics_process(delta):
 	$MeshInstance.rotate_x(deg2rad(velocity.z))
 
 
+
 func _on_Collision_area_body_entered(body):
 	#print("enemy collided with: " +  body.name)
 	if body.name == "bullet_explosion":
@@ -108,3 +84,33 @@ func _on_Collision_area_body_entered(body):
 		dir.y = 0
 		dir = dir.normalized()
 		velocity = dir * BOOM_SPEED
+		
+		
+		
+func choose_random_direction():
+	time_passed = 0
+	var rnd = rng.randf_range(0, 8)
+	move_up = false
+	move_down = false
+	move_left = false
+	move_right = false
+	if rnd < 1:
+		move_up = true
+	elif rnd < 2:
+		move_down = true
+	elif rnd < 3:
+		move_left = true
+	elif rnd < 4:
+		move_right = true
+	elif rnd < 5:
+		move_up = true
+		move_right = true
+	elif rnd < 6:
+		move_right = true
+		move_down = true
+	elif rnd < 7:
+		move_down = true
+		move_left = true
+	else:
+		move_left = true
+		move_up = true
