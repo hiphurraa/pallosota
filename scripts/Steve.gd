@@ -12,7 +12,7 @@ const CAMERA_MAX_ZOOM = 50
 const CAMERA_MIN_ZOOM = 15
 var cameraTargetAngle = 0.0
 # BULLER COLLISION
-const BOOM_SPEED = 100
+const BOOM_SPEED = 150
 
 
 func _ready():
@@ -99,7 +99,8 @@ func _physics_process(delta):
 
 
 func _on_player_collision_area_body_entered(body):
-	if body.name == "Bullet":
+	print("player collided with: " +  body.name)
+	if body.name == "Bullet" or body.name == "bullet_explosion":
 		var bullet_location = body.global_transform.origin
 		var player_location = global_transform.origin
 		var dir = Vector3()
