@@ -1,8 +1,7 @@
 extends KinematicBody	
 
 var fall_speed = Vector3()
-const GRAVITY = 9.81
-const JUMP = 5
+const GRAVITY = 9.81 * 10
 
 # MOVEMENT
 var velocity = Vector3(0, 0, 0)
@@ -92,17 +91,13 @@ func _physics_process(delta):
 	dir += camera_dir.x * inputMoveVector.x
 	dir = dir.normalized()
 	if not is_on_floor():
-		fall_speed.y -= GRAVITY / delta
-	elif Input.is_action_just_pressed("jump"):
-		print("jump")
-		fall_speed.y = JUMP
+		fall_speed.y -= GRAVITY * delta
 	else:
 		fall_speed.y = 0
-		
-	
+
 	var moveDir = dir * speed
-	moveDir.y = fall_speed.y
 	velocity = velocity.linear_interpolate(moveDir, ACCELERATION * delta)
+	velocity.y = fall_speed.y
 	velocity = move_and_slide(velocity, Vector3.UP, 0.05, 4, 45)
 	
 	# BALL MESH ROTATION ACCORDING TO SPEED
@@ -112,7 +107,7 @@ func _physics_process(delta):
 
 func _on_player_collision_area_body_entered(body):
 	#print("player collided with: " +  body.name)
-	if body.name == "bullet_explosion" or body.name == "enemy":
+	if body.name == "bullet_explosion":
 		var bullet_location = body.global_transform.origin
 		var player_location = global_transform.origin
 		var dir = Vector3()

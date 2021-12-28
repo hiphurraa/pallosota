@@ -20,6 +20,7 @@ material = SubResource( 4 )
 size = Vector3( 132, 2, 132 )
 
 [sub_resource type="SphereShape" id=6]
+radius = 1.01684
 
 [node name="Level" type="Spatial"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
@@ -35,7 +36,7 @@ mesh = SubResource( 5 )
 material/0 = null
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12.4415, 53 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0128679, 2.18644, 57.0269 )
 script = ExtResource( 2 )
 
 [node name="Camera_base" type="Spatial" parent="Player"]
@@ -48,7 +49,6 @@ environment = ExtResource( 3 )
 [node name="player_collision_area" type="Area" parent="Player"]
 
 [node name="CollisionShape" type="CollisionShape" parent="Player/player_collision_area"]
-transform = Transform( 1.01, 0, 0, 0, 1.01, 0, 0, 0, 1.01, 0, 0, 0 )
 shape = SubResource( 6 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
