@@ -1,8 +1,9 @@
 extends KinematicBody
 
 var velocity = Vector3(0, 0, 0)
-const NORMAL_SPEED = 20
-const SPRINT_SPEED = 40
+const SNEAK_SPEED = 7
+const NORMAL_SPEED = 17
+const SPRINT_SPEED = 35
 const DIAGONAL_SCALE = 1.414
 const ACCELERATION = 5
 
@@ -46,6 +47,8 @@ func _physics_process(delta):
 	var speed = NORMAL_SPEED
 	if Input.is_action_pressed("sprint"):
 		speed = SPRINT_SPEED
+	elif Input.is_action_pressed("sneak"):
+		speed = SNEAK_SPEED
 		
 	# UP AND DOWN MOVEMENT
 	if Input.is_action_pressed("move_up") and Input.is_action_pressed("move_down"):
@@ -66,6 +69,7 @@ func _physics_process(delta):
 		inputMoveVector.x += 1
 	else:
 		pass
+		
 		
 	inputMoveVector = inputMoveVector.normalized()
 	dir += -camera_dir.z * inputMoveVector.y
