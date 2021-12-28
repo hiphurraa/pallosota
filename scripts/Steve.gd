@@ -1,4 +1,4 @@
-extends KinematicBody
+extends KinematicBody	
 
 var velocity = Vector3(0, 0, 0)
 const SNEAK_SPEED = 7
@@ -6,6 +6,9 @@ const NORMAL_SPEED = 17
 const SPRINT_SPEED = 35
 const DIAGONAL_SCALE = 1.414
 const ACCELERATION = 5
+var camera_zoom = 30
+const CAMERA_MAX_ZOOM = 50
+const CAMERA_MIN_ZOOM = 15
 
 var cameraTargetAngle = 0.0
 
@@ -14,7 +17,6 @@ func _ready():
 	pass
 	
 func _physics_process(delta):
-	print(delta)
 
 	# CAMERA
 	# ROTATE CAMERA LEFT
@@ -24,7 +26,6 @@ func _physics_process(delta):
 			cameraTargetAngle = 45
 		else:
 			cameraTargetAngle += 45
-		print(cameraTargetAngle)
 	
 	# ROTATE CAMERA RIGHT		
 	if Input.is_action_just_pressed("rotate_camera_right"):
@@ -33,9 +34,15 @@ func _physics_process(delta):
 			cameraTargetAngle = 315
 		else:
 			cameraTargetAngle -= 45
-		print(cameraTargetAngle)
 		
+	if Input.is_action_just_released("zoom_out"):
+		if(camera_zoom < CAMERA_MAX_ZOOM):
+			camera_zoom += camera_zoom/10
+	elif Input.is_action_just_released("zoom_in"):
+		if(camera_zoom > CAMERA_MIN_ZOOM):
+			camera_zoom -= camera_zoom/10
 		
+	$Camera_base.translation.y = lerp($Camera_base.translation.y, camera_zoom, 0.1)
 	$Camera_base.rotation_degrees.y = lerp($Camera_base.rotation_degrees.y, cameraTargetAngle, 0.1)
 	
 	var dir = Vector3()

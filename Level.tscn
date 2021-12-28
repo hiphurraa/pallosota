@@ -34,9 +34,10 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 53 )
 script = ExtResource( 2 )
 
 [node name="Camera_base" type="Spatial" parent="Player"]
+transform = Transform( 1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 0, 0 )
 
 [node name="Camera" type="Camera" parent="Player/Camera_base"]
-transform = Transform( 1, 0, 0, 0, 0.540182, 0.841549, 0, -0.841549, 0.540182, 0, 26.723, 3.407 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 environment = ExtResource( 3 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
