@@ -62,25 +62,4 @@ transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 1, -53 )
 [node name="Bullet" parent="." instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 46.6468 )
 
-[node name="Bullet2" parent="." instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.19338, 1, 46.5852 )
-
-[node name="Bullet3" parent="." instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.19338, 1, 50.5079 )
-
-[node name="Bullet4" parent="." instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.19338, 1, 55.1969 )
-
-[node name="Bullet5" parent="." instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.791706, 1, 59.4981 )
-
-[node name="Bullet6" parent="." instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.08965, 1, 47.3277 )
-
-[node name="Bullet7" parent="." instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.01914, 1, 52.7054 )
-
-[node name="Bullet8" parent="." instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.38866, 1, 56.0875 )
-
 [connection signal="body_entered" from="Player/player_collision_area" to="Player" method="_on_player_collision_area_body_entered"]

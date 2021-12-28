@@ -12,6 +12,8 @@ var move_left = false
 var move_right = false
 var time_passed = 0
 
+const BOOM_SPEED = 150
+
 var rng = RandomNumberGenerator.new()
 
 func _on_Vision_area_body_entered(body):
@@ -105,3 +107,16 @@ func _physics_process(delta):
 	# BALL MESH ROTATION ACCORDING TO SPEED
 	$MeshInstance.rotate_z(deg2rad(-velocity.x))
 	$MeshInstance.rotate_x(deg2rad(velocity.z))
+
+
+func _on_Collision_area_body_entered(body):
+	print("enemy collided with: " +  body.name)
+	if body.name == "Bullet" or body.name == "bullet_explosion":
+		var bullet_location = body.global_transform.origin
+		var player_location = global_transform.origin
+		var dir = Vector3()
+		dir.x = player_location.x - bullet_location.x
+		dir.z = player_location.z - bullet_location.z
+		dir.y = 0
+		dir = dir.normalized()
+		velocity = dir * BOOM_SPEED
