@@ -1,5 +1,8 @@
 extends KinematicBody
 
+var fall_velocity = Vector3()
+const GRAVITY = 9.81 * 10
+
 var velocity = Vector3(0, 0, 0)
 const SNEAK_SPEED = 7
 const NORMAL_SPEED = 17
@@ -61,10 +64,17 @@ func _physics_process(delta):
 	dir.y = 0
 	dir = dir.normalized()
 	
+	# GRAVITY
+	if not is_on_floor():
+		fall_velocity.y -= GRAVITY * delta
+	else:
+		fall_velocity.y = 0
+	
 	velocity.y = 0
 	var moveDir = dir * speed
 	var up = Vector3(0, 1, 0)
 	velocity = velocity.linear_interpolate(moveDir, ACCELERATION * delta)
+	velocity.y = fall_velocity.y
 	velocity = move_and_slide(velocity, up, 0.05, 4, 45)
 	
 	# BALL MESH ROTATION ACCORDING TO SPEED

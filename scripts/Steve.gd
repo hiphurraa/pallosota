@@ -59,6 +59,8 @@ func _physics_process(delta):
 	dir += -camera_dir.z * inputMoveVector.y
 	dir += camera_dir.x * inputMoveVector.x
 	dir = dir.normalized()
+	
+	# GRAVITY
 	if not is_on_floor():
 		fall_velocity.y -= GRAVITY * delta
 	else:
