@@ -10,7 +10,8 @@ config_version=4
 
 [application]
 
-config/name="Jousimies"
+config/name="Pallosota"
+run/main_scene="res://Main_menu.tscn"
 config/icon="res://icon.png"
 
 [display]
