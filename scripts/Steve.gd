@@ -25,7 +25,9 @@ const CAMERA_MODE_MOUSE = "MOUSE"
 const CAMERA_MODE_KEYBOARD = "KEYBOARD"
 var camera_mode = CAMERA_MODE_MOUSE
 var MOUSE_SENSITIVITY = 0.15
-var camera_anglev=0
+var mouse_camera_max_angle = 15
+var mouse_camera_min_angle = -70
+var mouse_cursor = false
 
 # BULLET COLLISION
 const BOOM_SPEED = 120
@@ -36,21 +38,21 @@ func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
 func _input(event):
-	if event is InputEventMouseMotion:
+	if event is InputEventMouseMotion and !mouse_cursor:
 		camera_mode = CAMERA_MODE_MOUSE
 		$Camera_base.rotate_y(deg2rad(-event.relative.x*MOUSE_SENSITIVITY))
 		var changev=-event.relative.y * MOUSE_SENSITIVITY
-		$Camera_base.get_node("lever").get_node("arm").rotate_x(deg2rad(changev))
+		var rotation_state = $Camera_base.get_node("lever").get_node("arm").rotation_degrees.x
+		print(rotation_state)
+		if (rotation_state < mouse_camera_max_angle and changev > 0 ) or (rotation_state > mouse_camera_min_angle and changev < 0):
+			$Camera_base.get_node("lever").get_node("arm").rotate_x(deg2rad(changev))
 		
 	
 func _physics_process(delta):
 	
-	if Input.is_key_pressed(KEY_0):
-		MOUSE_SENSITIVITY -= 0.01
-		print(MOUSE_SENSITIVITY)
-	if Input.is_key_pressed(KEY_1):
-		MOUSE_SENSITIVITY += 0.01
-		print(MOUSE_SENSITIVITY)
+	if Input.is_key_pressed(KEY_ESCAPE):
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		mouse_cursor = true
 	
 	# PLAYER MOVEMENT
 	var dir = Vector3()
@@ -104,18 +106,22 @@ func _physics_process(delta):
 	
 	# SHOOTING
 	if Input.is_action_just_pressed("shoot"):
-		var shooting_direction = Vector3()
-		shooting_direction += -camera_basis.z
-		shooting_direction = shooting_direction.normalized()
-		var bullet_instance = bullet_class.instance()
-		var bullet_locations_to_be = Vector3()
-		bullet_locations_to_be = global_transform.origin
-		bullet_locations_to_be += shooting_direction * 2
-		bullet_locations_to_be.y = 1
-		bullet_instance.global_transform.origin = bullet_locations_to_be
-		print(global_transform.origin)
-		get_parent().add_child(bullet_instance)
-		bullet_instance.init(shooting_direction)
+		if mouse_cursor:
+			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+			mouse_cursor = false
+		else:
+			var shooting_direction = Vector3()
+			shooting_direction += -camera_basis.z
+			shooting_direction = shooting_direction.normalized()
+			var bullet_instance = bullet_class.instance()
+			var bullet_locations_to_be = Vector3()
+			bullet_locations_to_be = global_transform.origin
+			bullet_locations_to_be += shooting_direction * 2
+			bullet_locations_to_be.y = 1
+			bullet_instance.global_transform.origin = bullet_locations_to_be
+			print(global_transform.origin)
+			get_parent().add_child(bullet_instance)
+			bullet_instance.init(shooting_direction)
 		
 	# CAMERA
 	# ROTATE CAMERA LEFT
