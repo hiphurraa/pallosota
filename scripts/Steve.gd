@@ -13,7 +13,7 @@ const ACCELERATION = 5
 
 # CAMERA
 var camera_zoom = 15
-const CAMERA_MAX_ZOOM = 30
+const CAMERA_MAX_ZOOM = 20
 const CAMERA_MIN_ZOOM = 5
 var cameraTargetAngle = 0.0
 const CAM_MAX_ROTATE_SPEED = 5
@@ -164,12 +164,22 @@ func _physics_process(delta):
 	
 	cameraTargetAngle += cam_rotate_speed
 	if camera_mode == CAMERA_MODE_KEYBOARD:
+		$Camera_base.get_node("camera_arm").get_node("Camera").translation.z = 10
 		$Camera_base.rotation_degrees.y = lerp($Camera_base.rotation_degrees.y, cameraTargetAngle, 0.1)
-		$Camera_base.get_child(0).rotation_degrees.x = lerp($Camera_base.get_child(0).rotation_degrees.x, new_cam_angle, 0.1)
+		$Camera_base.get_node("camera_arm").rotation_degrees.x = lerp($Camera_base.get_node("camera_arm").rotation_degrees.x, new_cam_angle, 0.1)
 		$Camera_base.translation.y = lerp($Camera_base.translation.y, camera_zoom, 0.1)
+		$Camera_base.get_node("camera_arm").translation.z = lerp($Camera_base.get_node("camera_arm").translation.z, camera_zoom*0.2, 0.1)
+		$Camera_base.get_node("camera_arm").get_node("Camera").rotation_degrees.x = lerp($Camera_base.get_node("camera_arm").get_node("Camera").rotation_degrees.x, 0, 0.1)
 	elif camera_mode == CAMERA_MODE_MOUSE:
+		cameraTargetAngle = $Camera_base.rotation_degrees.y
 		$Camera_base.translation.y = 3
-		$Camera_base.get_node("camera_arm").get_node("Camera").translation.z = camera_zoom
+		$Camera_base.get_node("camera_arm").get_node("Camera").translation.z = lerp($Camera_base.get_node("camera_arm").get_node("Camera").translation.z, camera_zoom + 3, 0.1)
+		$Camera_base.get_node("camera_arm").get_node("Camera").rotation_degrees.x = lerp($Camera_base.get_node("camera_arm").get_node("Camera").rotation_degrees.x, camera_zoom, 0.1)
+		
+		# COMPENSATING FOR THE ROTATION
+		#$Camera_base.get_node("camera_arm").rotation_degrees.x = lerp($Camera_base.get_node("camera_arm").rotation_degrees.x, -camera_zoom, 0.1)
+		
+		
 		
 
 
