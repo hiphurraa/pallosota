@@ -24,7 +24,7 @@ const CAM_ROTATE_STARTING_SPEED = 1
 const CAMERA_MODE_MOUSE = "MOUSE"
 const CAMERA_MODE_KEYBOARD = "KEYBOARD"
 var camera_mode = CAMERA_MODE_MOUSE
-var MOUSE_SENSITIVITY = 0.1
+var MOUSE_SENSITIVITY = 0.15
 var camera_anglev=0
 
 # BULLET COLLISION
@@ -40,7 +40,7 @@ func _input(event):
 		camera_mode = CAMERA_MODE_MOUSE
 		$Camera_base.rotate_y(deg2rad(-event.relative.x*MOUSE_SENSITIVITY))
 		var changev=-event.relative.y * MOUSE_SENSITIVITY
-		camera_zoom += -changev
+		$Camera_base.get_node("camera_arm").rotate_x(deg2rad(changev))
 		
 	
 func _physics_process(delta):
@@ -148,9 +148,11 @@ func _physics_process(delta):
 		if(camera_zoom > CAMERA_MIN_ZOOM):
 			camera_zoom -= camera_zoom * 0.2
 	if Input.is_action_pressed("zoom_in"):
+		camera_mode = CAMERA_MODE_KEYBOARD
 		if(camera_zoom > CAMERA_MIN_ZOOM):
 			camera_zoom -= camera_zoom * 0.05
 	if Input.is_action_pressed("zoom_out"):
+		camera_mode = CAMERA_MODE_KEYBOARD
 		if(camera_zoom < CAMERA_MAX_ZOOM):
 			camera_zoom += camera_zoom * 0.05
 	
@@ -166,8 +168,8 @@ func _physics_process(delta):
 		$Camera_base.get_child(0).rotation_degrees.x = lerp($Camera_base.get_child(0).rotation_degrees.x, new_cam_angle, 0.1)
 		$Camera_base.translation.y = lerp($Camera_base.translation.y, camera_zoom, 0.1)
 	elif camera_mode == CAMERA_MODE_MOUSE:
-		$Camera_base.get_child(0).rotation_degrees.x = new_cam_angle
-		$Camera_base.translation.y = camera_zoom
+		$Camera_base.translation.y = 3
+		$Camera_base.get_node("camera_arm").get_node("Camera").translation.z = camera_zoom
 		
 
 
