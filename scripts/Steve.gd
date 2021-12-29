@@ -174,6 +174,7 @@ func _physics_process(delta):
 	elif camera_mode == CAMERA_MODE_MOUSE:
 		cameraTargetAngle = $Camera_base.rotation_degrees.y
 		$Camera_base.translation.y = 3
+		$Camera_base.get_node("lever").get_node("arm").translation.z = 0
 		$Camera_base.get_node("lever").get_node("arm").get_node("camera").translation.z = lerp($Camera_base.get_node("lever").get_node("arm").get_node("camera").translation.z, camera_zoom + 3, 0.1)
 		$Camera_base.get_node("lever").get_node("arm").get_node("camera").rotation_degrees.x = lerp($Camera_base.get_node("lever").get_node("arm").get_node("camera").rotation_degrees.x, camera_zoom, 0.1)
 		$Camera_base.get_node("lever").rotation_degrees.x = lerp($Camera_base.get_node("lever").rotation_degrees.x, -camera_zoom, 0.1)
