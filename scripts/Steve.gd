@@ -61,7 +61,7 @@ func _physics_process(delta):
 	
 	# MOVEMENT SPEED
 	var speed = NORMAL_SPEED
-	if Input.is_action_pressed("sprint"):
+	if Input.is_action_pressed("sprint") and not Input.is_action_pressed("aim"):
 		speed = SPRINT_SPEED
 	elif Input.is_action_pressed("sneak"):
 		speed = SNEAK_SPEED
@@ -119,7 +119,6 @@ func _physics_process(delta):
 			bullet_locations_to_be += shooting_direction * 2
 			bullet_locations_to_be.y = 1
 			bullet_instance.global_transform.origin = bullet_locations_to_be
-			print(global_transform.origin)
 			get_parent().add_child(bullet_instance)
 			bullet_instance.init(shooting_direction)
 		
@@ -161,10 +160,17 @@ func _physics_process(delta):
 		camera_mode = CAMERA_MODE_KEYBOARD
 		if(camera_zoom < CAMERA_MAX_ZOOM):
 			camera_zoom += camera_zoom * 0.05
-	
+			
+	var cam_zoom_with_aim = camera_zoom
+	if Input.is_action_pressed("aim"):
+		if camera_mode == CAMERA_MODE_KEYBOARD:
+			cam_zoom_with_aim = 3.5
+		else:
+			cam_zoom_with_aim = 2
+		
 	# APPLY CAMERA ANGLE AND ZOOM
 	var cam_dist_from_player = 10
-	var cam_angle_radians = Vector2(cam_dist_from_player, camera_zoom).angle()
+	var cam_angle_radians = Vector2(cam_dist_from_player, cam_zoom_with_aim).angle()
 	var cam_angle_degrees = rad2deg(cam_angle_radians)
 	var new_cam_angle = -cam_angle_degrees + 20
 	
@@ -173,17 +179,17 @@ func _physics_process(delta):
 		$Camera_base.get_node("lever").get_node("arm").get_node("camera").translation.z = 10
 		$Camera_base.rotation_degrees.y = lerp($Camera_base.rotation_degrees.y, cameraTargetAngle, 0.1)
 		$Camera_base.get_node("lever").get_node("arm").rotation_degrees.x = lerp($Camera_base.get_node("lever").get_node("arm").rotation_degrees.x, new_cam_angle, 0.1)
-		$Camera_base.translation.y = lerp($Camera_base.translation.y, camera_zoom, 0.1)
-		$Camera_base.get_node("lever").get_node("arm").translation.z = lerp($Camera_base.get_node("lever").get_node("arm").translation.z, camera_zoom*0.2, 0.1)
+		$Camera_base.translation.y = lerp($Camera_base.translation.y, cam_zoom_with_aim, 0.1)
+		$Camera_base.get_node("lever").get_node("arm").translation.z = lerp($Camera_base.get_node("lever").get_node("arm").translation.z, cam_zoom_with_aim*0.2, 0.1)
 		$Camera_base.get_node("lever").get_node("arm").get_node("camera").rotation_degrees.x = lerp($Camera_base.get_node("lever").get_node("arm").get_node("camera").rotation_degrees.x, 0, 0.1)
 		$Camera_base.get_node("lever").rotation_degrees.x = lerp($Camera_base.get_node("lever").rotation_degrees.x, 0, 0.1)
 	elif camera_mode == CAMERA_MODE_MOUSE:
 		cameraTargetAngle = $Camera_base.rotation_degrees.y
 		$Camera_base.translation.y = 3
 		$Camera_base.get_node("lever").get_node("arm").translation.z = 0
-		$Camera_base.get_node("lever").get_node("arm").get_node("camera").translation.z = lerp($Camera_base.get_node("lever").get_node("arm").get_node("camera").translation.z, camera_zoom + 3, 0.1)
-		$Camera_base.get_node("lever").get_node("arm").get_node("camera").rotation_degrees.x = lerp($Camera_base.get_node("lever").get_node("arm").get_node("camera").rotation_degrees.x, camera_zoom, 0.1)
-		$Camera_base.get_node("lever").rotation_degrees.x = lerp($Camera_base.get_node("lever").rotation_degrees.x, -camera_zoom, 0.1)
+		$Camera_base.get_node("lever").get_node("arm").get_node("camera").translation.z = lerp($Camera_base.get_node("lever").get_node("arm").get_node("camera").translation.z, cam_zoom_with_aim + 3, 0.1)
+		$Camera_base.get_node("lever").get_node("arm").get_node("camera").rotation_degrees.x = lerp($Camera_base.get_node("lever").get_node("arm").get_node("camera").rotation_degrees.x, cam_zoom_with_aim, 0.1)
+		$Camera_base.get_node("lever").rotation_degrees.x = lerp($Camera_base.get_node("lever").rotation_degrees.x, -cam_zoom_with_aim, 0.1)
 		
 		
 		
