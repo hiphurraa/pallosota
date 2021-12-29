@@ -1,5 +1,6 @@
 extends KinematicBody	
 
+# GRAVITY
 var fall_velocity = Vector3()
 const GRAVITY = 9.81 * 10
 
@@ -9,12 +10,14 @@ const SNEAK_SPEED = 7
 const NORMAL_SPEED = 17
 const SPRINT_SPEED = 35
 const ACCELERATION = 5
+
 # CAMERA
-var camera_zoom = 30
-const CAMERA_MAX_ZOOM = 50
-const CAMERA_MIN_ZOOM = 15
+var camera_zoom = 50
+const CAMERA_MAX_ZOOM = 40
+const CAMERA_MIN_ZOOM = 5
 var cameraTargetAngle = 0.0
-# BULLER COLLISION
+
+# BULLET COLLISION
 const BOOM_SPEED = 120
 var bullet_class = load("res://assets/Bullet.tscn")
 
@@ -26,10 +29,10 @@ func _physics_process(delta):
 	
 	# PLAYER MOVEMENT
 	var dir = Vector3()
-	var inputMoveVector = Vector2()
-	var camera_dir = $Camera_base.get_global_transform().basis
+	var input_move_vector = Vector2()
+	var camera_basis = $Camera_base.get_global_transform().basis
 	
-	# SPEED
+	# MOVEMENT SPEED
 	var speed = NORMAL_SPEED
 	if Input.is_action_pressed("sprint"):
 		speed = SPRINT_SPEED
@@ -40,24 +43,24 @@ func _physics_process(delta):
 	if Input.is_action_pressed("move_up") and Input.is_action_pressed("move_down"):
 		pass
 	elif Input.is_action_pressed("move_up"):
-		inputMoveVector.y += 1
+		input_move_vector.y += 1
 	elif Input.is_action_pressed("move_down"):
-		inputMoveVector.y -= 1
+		input_move_vector.y -= 1
 	
 	# LEFT AND RIGHT MOVEMENT
 	if Input.is_action_pressed("move_left") and Input.is_action_pressed("move_right"):
 		pass
 	elif Input.is_action_pressed("move_left"):
-		inputMoveVector.x -= 1
+		input_move_vector.x -= 1
 	elif Input.is_action_pressed("move_right"):
-		inputMoveVector.x += 1
+		input_move_vector.x += 1
 		
 		
 		
 	# APPLY MOVEMENT
-	inputMoveVector = inputMoveVector.normalized()
-	dir += -camera_dir.z * inputMoveVector.y
-	dir += camera_dir.x * inputMoveVector.x
+	input_move_vector = input_move_vector.normalized()
+	dir += -camera_basis.z * input_move_vector.y
+	dir += camera_basis.x * input_move_vector.x
 	dir = dir.normalized()
 	
 	# GRAVITY
@@ -66,10 +69,10 @@ func _physics_process(delta):
 	else:
 		fall_velocity.y = 0
 
-	var moveDir = dir * speed
-	velocity = velocity.linear_interpolate(moveDir, ACCELERATION * delta)
+	var move_dir = dir * speed
+	velocity = velocity.linear_interpolate(move_dir, ACCELERATION * delta)
 	velocity.y = fall_velocity.y
-	velocity = move_and_slide(velocity, Vector3.UP, 0.05, 4, 45)
+	move_and_slide(velocity)
 	
 	# BALL MESH ROTATION ACCORDING TO SPEED
 	$MeshInstance.rotate_z(deg2rad(-velocity.x))
@@ -77,13 +80,15 @@ func _physics_process(delta):
 	
 	# SHOOTING
 	if Input.is_action_just_pressed("shoot"):
+		var shooting_direction = Vector3()
+		shooting_direction += -camera_basis.z
+		shooting_direction = shooting_direction.normalized()
+		# Create a bullet instance and add it to the level
 		var bullet_instance = bullet_class.instance()
-		bullet_instance.init(camera_dir.z)
+		bullet_instance.global_transform.origin = global_transform.origin
 		get_parent().add_child(bullet_instance)
-		bullet_instance.global_transform.origin.x = global_transform.origin.x
-		bullet_instance.global_transform.origin.y = global_transform.origin.y + 1.5
-		bullet_instance.global_transform.origin.z = global_transform.origin.z
-		
+		bullet_instance.global_transform.origin += shooting_direction * 3
+		bullet_instance.init(shooting_direction)
 		
 	# CAMERA
 	# ROTATE CAMERA LEFT
@@ -105,13 +110,18 @@ func _physics_process(delta):
 	# ZOOM
 	if Input.is_action_just_released("zoom_out"):
 		if(camera_zoom < CAMERA_MAX_ZOOM):
-			camera_zoom += camera_zoom/10
+			camera_zoom += camera_zoom/5
 	elif Input.is_action_just_released("zoom_in"):
 		if(camera_zoom > CAMERA_MIN_ZOOM):
-			camera_zoom -= camera_zoom/10
+			camera_zoom -= camera_zoom/5
 		
 	$Camera_base.translation.y = lerp($Camera_base.translation.y, camera_zoom, 0.1)
 	$Camera_base.rotation_degrees.y = lerp($Camera_base.rotation_degrees.y, cameraTargetAngle, 0.1)
+	var cam_dist_from_player = 10
+	var cam_angle_radians = Vector2(cam_dist_from_player, camera_zoom).angle()
+	var cam_angle_degrees = rad2deg(cam_angle_radians)
+	var new_cam_angle = -cam_angle_degrees + 20
+	$Camera_base.get_child(0).rotation_degrees.x = lerp($Camera_base.get_child(0).rotation_degrees.x, new_cam_angle, 0.1)
 		
 
 

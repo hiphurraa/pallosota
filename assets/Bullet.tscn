@@ -3,14 +3,17 @@
 [ext_resource path="res://scripts/Bullet.gd" type="Script" id=1]
 
 [sub_resource type="SphereMesh" id=2]
+radius = 2.0
+height = 4.0
 
 [sub_resource type="SpatialMaterial" id=8]
 albedo_color = Color( 1, 0, 0, 1 )
 
 [sub_resource type="SphereShape" id=3]
+radius = 0.554609
 
 [sub_resource type="CylinderShape" id=4]
-radius = 0.355445
+radius = 0.57021
 height = 0.327994
 
 [sub_resource type="SphereMesh" id=5]
@@ -21,6 +24,7 @@ albedo_color = Color( 0.686275, 0.65098, 0.117647, 1 )
 [sub_resource type="SphereShape" id=7]
 
 [node name="Bullet" type="KinematicBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.656776, 0 )
 script = ExtResource( 1 )
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
@@ -29,7 +33,6 @@ mesh = SubResource( 2 )
 material/0 = SubResource( 8 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0 )
 shape = SubResource( 3 )
 
 [node name="bullet_collision_area" type="Area" parent="."]
