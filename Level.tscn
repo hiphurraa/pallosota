@@ -35,7 +35,7 @@ mesh = SubResource( 5 )
 material/0 = null
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0128679, 2.18644, 57.0269 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0128679, 1.18644, 0.0269012 )
 script = ExtResource( 2 )
 
 [node name="Camera_base" type="Spatial" parent="Player"]

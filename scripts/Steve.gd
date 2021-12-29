@@ -38,7 +38,7 @@ func _physics_process(delta):
 		speed = SPRINT_SPEED
 	elif Input.is_action_pressed("sneak"):
 		speed = SNEAK_SPEED
-		
+	
 	# UP AND DOWN MOVEMENT
 	if Input.is_action_pressed("move_up") and Input.is_action_pressed("move_down"):
 		pass
@@ -55,20 +55,19 @@ func _physics_process(delta):
 	elif Input.is_action_pressed("move_right"):
 		input_move_vector.x += 1
 		
-		
-		
-	# APPLY MOVEMENT
-	input_move_vector = input_move_vector.normalized()
-	dir += -camera_basis.z * input_move_vector.y
-	dir += camera_basis.x * input_move_vector.x
-	dir = dir.normalized()
-	
 	# GRAVITY
 	if not is_on_floor():
 		fall_velocity.y -= GRAVITY * delta
 	else:
 		fall_velocity.y = 0
-
+		
+	# MOVEMENT DIRECTION
+	input_move_vector = input_move_vector.normalized()
+	dir += -camera_basis.z * input_move_vector.y
+	dir += camera_basis.x * input_move_vector.x
+	dir = dir.normalized()
+	
+	# APPLY PHYSICS AND MOVEMENT INPUT
 	var move_dir = dir * speed
 	velocity = velocity.linear_interpolate(move_dir, ACCELERATION * delta)
 	velocity.y = fall_velocity.y
@@ -83,11 +82,14 @@ func _physics_process(delta):
 		var shooting_direction = Vector3()
 		shooting_direction += -camera_basis.z
 		shooting_direction = shooting_direction.normalized()
-		# Create a bullet instance and add it to the level
 		var bullet_instance = bullet_class.instance()
-		bullet_instance.global_transform.origin = global_transform.origin
+		var bullet_locations_to_be = Vector3()
+		bullet_locations_to_be = global_transform.origin
+		bullet_locations_to_be += shooting_direction * 2
+		bullet_locations_to_be.y = 1
+		bullet_instance.global_transform.origin = bullet_locations_to_be
+		print(global_transform.origin)
 		get_parent().add_child(bullet_instance)
-		bullet_instance.global_transform.origin += shooting_direction * 3
 		bullet_instance.init(shooting_direction)
 		
 	# CAMERA

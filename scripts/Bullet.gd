@@ -18,11 +18,15 @@ func _ready():
 func init(dir):
 	shooting_direction = dir
 
+
+
 func _on_bullet_collision_area_body_entered(body):
 	if collided_with_my_self < SELF_COLLISIONS:
 		collided_with_my_self += 1
 	else:
 		explode()
+		
+		
 		
 func _physics_process(delta):
 	life_timer += delta
