@@ -21,6 +21,11 @@ var cam_rotate_speed = 0
 const CAM_ROTATE_ACCELERATION = 4
 const CAM_ROTATE_DECELERATION = 20
 const CAM_ROTATE_STARTING_SPEED = 1
+const CAMERA_MODE_MOUSE = "MOUSE"
+const CAMERA_MODE_KEYBOARD = "KEYBOARD"
+var camera_mode = CAMERA_MODE_MOUSE
+var MOUSE_SENSITIVITY = 0.1
+var camera_anglev=0
 
 # BULLET COLLISION
 const BOOM_SPEED = 120
@@ -28,9 +33,25 @@ var bullet_class = load("res://assets/Bullet.tscn")
 
 
 func _ready():
-	pass
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	
+func _input(event):
+	if event is InputEventMouseMotion:
+		$Camera_base.rotate_y(deg2rad(-event.relative.x*MOUSE_SENSITIVITY))
+		var changev=-event.relative.y*MOUSE_SENSITIVITY
+		if camera_anglev+changev>-50 and camera_anglev+changev<50:
+			camera_anglev+=changev
+			$Camera_base.get_node("Camera").rotate_x(deg2rad(changev))
+		
 	
 func _physics_process(delta):
+	
+	if Input.is_key_pressed(KEY_0):
+		MOUSE_SENSITIVITY -= 0.01
+		print(MOUSE_SENSITIVITY)
+	if Input.is_key_pressed(KEY_1):
+		MOUSE_SENSITIVITY += 0.01
+		print(MOUSE_SENSITIVITY)
 	
 	# PLAYER MOVEMENT
 	var dir = Vector3()
@@ -100,6 +121,7 @@ func _physics_process(delta):
 	# CAMERA
 	# ROTATE CAMERA LEFT
 	if Input.is_action_pressed("rotate_camera_left"):
+		camera_mode = CAMERA_MODE_KEYBOARD
 		if(cam_rotate_speed < CAM_MAX_ROTATE_SPEED):
 			if cam_rotate_speed < CAM_ROTATE_STARTING_SPEED:
 				cam_rotate_speed = CAM_ROTATE_STARTING_SPEED
@@ -107,6 +129,7 @@ func _physics_process(delta):
 	
 	# ROTATE CAMERA RIGHT
 	elif Input.is_action_pressed("rotate_camera_right"):
+		camera_mode = CAMERA_MODE_KEYBOARD
 		if(cam_rotate_speed > -CAM_MAX_ROTATE_SPEED):
 			if cam_rotate_speed > -CAM_ROTATE_STARTING_SPEED:
 				cam_rotate_speed = -CAM_ROTATE_STARTING_SPEED
@@ -134,13 +157,14 @@ func _physics_process(delta):
 	
 	# APPLY CAMERA ANGLE AND ZOOM
 	cameraTargetAngle += cam_rotate_speed
+	if camera_mode == CAMERA_MODE_KEYBOARD:
+		$Camera_base.rotation_degrees.y = lerp($Camera_base.rotation_degrees.y, cameraTargetAngle, 0.1)
+		var cam_dist_from_player = 10
+		var cam_angle_radians = Vector2(cam_dist_from_player, camera_zoom).angle()
+		var cam_angle_degrees = rad2deg(cam_angle_radians)
+		var new_cam_angle = -cam_angle_degrees + 20
+		$Camera_base.get_child(0).rotation_degrees.x = lerp($Camera_base.get_child(0).rotation_degrees.x, new_cam_angle, 0.1)
 	$Camera_base.translation.y = lerp($Camera_base.translation.y, camera_zoom, 0.1)
-	$Camera_base.rotation_degrees.y = lerp($Camera_base.rotation_degrees.y, cameraTargetAngle, 0.1)
-	var cam_dist_from_player = 10
-	var cam_angle_radians = Vector2(cam_dist_from_player, camera_zoom).angle()
-	var cam_angle_degrees = rad2deg(cam_angle_radians)
-	var new_cam_angle = -cam_angle_degrees + 20
-	$Camera_base.get_child(0).rotation_degrees.x = lerp($Camera_base.get_child(0).rotation_degrees.x, new_cam_angle, 0.1)
 		
 
 
