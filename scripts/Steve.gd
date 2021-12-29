@@ -40,7 +40,7 @@ func _input(event):
 		camera_mode = CAMERA_MODE_MOUSE
 		$Camera_base.rotate_y(deg2rad(-event.relative.x*MOUSE_SENSITIVITY))
 		var changev=-event.relative.y * MOUSE_SENSITIVITY
-		$Camera_base.get_node("camera_arm").rotate_x(deg2rad(changev))
+		$Camera_base.get_node("lever").get_node("arm").rotate_x(deg2rad(changev))
 		
 	
 func _physics_process(delta):
@@ -164,20 +164,19 @@ func _physics_process(delta):
 	
 	cameraTargetAngle += cam_rotate_speed
 	if camera_mode == CAMERA_MODE_KEYBOARD:
-		$Camera_base.get_node("camera_arm").get_node("Camera").translation.z = 10
+		$Camera_base.get_node("lever").get_node("arm").get_node("camera").translation.z = 10
 		$Camera_base.rotation_degrees.y = lerp($Camera_base.rotation_degrees.y, cameraTargetAngle, 0.1)
-		$Camera_base.get_node("camera_arm").rotation_degrees.x = lerp($Camera_base.get_node("camera_arm").rotation_degrees.x, new_cam_angle, 0.1)
+		$Camera_base.get_node("lever").get_node("arm").rotation_degrees.x = lerp($Camera_base.get_node("lever").get_node("arm").rotation_degrees.x, new_cam_angle, 0.1)
 		$Camera_base.translation.y = lerp($Camera_base.translation.y, camera_zoom, 0.1)
-		$Camera_base.get_node("camera_arm").translation.z = lerp($Camera_base.get_node("camera_arm").translation.z, camera_zoom*0.2, 0.1)
-		$Camera_base.get_node("camera_arm").get_node("Camera").rotation_degrees.x = lerp($Camera_base.get_node("camera_arm").get_node("Camera").rotation_degrees.x, 0, 0.1)
+		$Camera_base.get_node("lever").get_node("arm").translation.z = lerp($Camera_base.get_node("lever").get_node("arm").translation.z, camera_zoom*0.2, 0.1)
+		$Camera_base.get_node("lever").get_node("arm").get_node("camera").rotation_degrees.x = lerp($Camera_base.get_node("lever").get_node("arm").get_node("camera").rotation_degrees.x, 0, 0.1)
+		$Camera_base.get_node("lever").rotation_degrees.x = lerp($Camera_base.get_node("lever").rotation_degrees.x, 0, 0.1)
 	elif camera_mode == CAMERA_MODE_MOUSE:
 		cameraTargetAngle = $Camera_base.rotation_degrees.y
 		$Camera_base.translation.y = 3
-		$Camera_base.get_node("camera_arm").get_node("Camera").translation.z = lerp($Camera_base.get_node("camera_arm").get_node("Camera").translation.z, camera_zoom + 3, 0.1)
-		$Camera_base.get_node("camera_arm").get_node("Camera").rotation_degrees.x = lerp($Camera_base.get_node("camera_arm").get_node("Camera").rotation_degrees.x, camera_zoom, 0.1)
-		
-		# COMPENSATING FOR THE ROTATION
-		#$Camera_base.get_node("camera_arm").rotation_degrees.x = lerp($Camera_base.get_node("camera_arm").rotation_degrees.x, -camera_zoom, 0.1)
+		$Camera_base.get_node("lever").get_node("arm").get_node("camera").translation.z = lerp($Camera_base.get_node("lever").get_node("arm").get_node("camera").translation.z, camera_zoom + 3, 0.1)
+		$Camera_base.get_node("lever").get_node("arm").get_node("camera").rotation_degrees.x = lerp($Camera_base.get_node("lever").get_node("arm").get_node("camera").rotation_degrees.x, camera_zoom, 0.1)
+		$Camera_base.get_node("lever").rotation_degrees.x = lerp($Camera_base.get_node("lever").rotation_degrees.x, -camera_zoom, 0.1)
 		
 		
 		

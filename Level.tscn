@@ -40,9 +40,11 @@ script = ExtResource( 2 )
 
 [node name="Camera_base" type="Spatial" parent="Player"]
 
-[node name="camera_arm" type="Spatial" parent="Player/Camera_base"]
+[node name="lever" type="Spatial" parent="Player/Camera_base"]
 
-[node name="Camera" type="Camera" parent="Player/Camera_base/camera_arm"]
+[node name="arm" type="Spatial" parent="Player/Camera_base/lever"]
+
+[node name="camera" type="Camera" parent="Player/Camera_base/lever/arm"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10 )
 environment = ExtResource( 3 )
 
