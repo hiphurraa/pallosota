@@ -34,8 +34,8 @@ func _physics_process(delta):
 		explode()
 	
 	if shooting_direction != null and not exploded:
-		velocity = velocity.linear_interpolate(shooting_direction * BULLET_SPEED, BULLET_ACCELERATION * delta)
-		move_and_slide(velocity)
+		velocity = velocity.linear_interpolate(shooting_direction, BULLET_ACCELERATION * delta)
+		global_transform.origin += velocity * delta * BULLET_SPEED
 	
 	# BOOM
 	if exploded and !shrinking:
