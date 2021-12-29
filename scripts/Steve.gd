@@ -37,11 +37,10 @@ func _ready():
 	
 func _input(event):
 	if event is InputEventMouseMotion:
+		camera_mode = CAMERA_MODE_MOUSE
 		$Camera_base.rotate_y(deg2rad(-event.relative.x*MOUSE_SENSITIVITY))
-		var changev=-event.relative.y*MOUSE_SENSITIVITY
-		if camera_anglev+changev>-50 and camera_anglev+changev<50:
-			camera_anglev+=changev
-			$Camera_base.get_node("Camera").rotate_x(deg2rad(changev))
+		var changev=-event.relative.y * MOUSE_SENSITIVITY
+		camera_zoom += -changev
 		
 	
 func _physics_process(delta):
@@ -156,15 +155,19 @@ func _physics_process(delta):
 			camera_zoom += camera_zoom * 0.05
 	
 	# APPLY CAMERA ANGLE AND ZOOM
+	var cam_dist_from_player = 10
+	var cam_angle_radians = Vector2(cam_dist_from_player, camera_zoom).angle()
+	var cam_angle_degrees = rad2deg(cam_angle_radians)
+	var new_cam_angle = -cam_angle_degrees + 20
+	
 	cameraTargetAngle += cam_rotate_speed
 	if camera_mode == CAMERA_MODE_KEYBOARD:
 		$Camera_base.rotation_degrees.y = lerp($Camera_base.rotation_degrees.y, cameraTargetAngle, 0.1)
-		var cam_dist_from_player = 10
-		var cam_angle_radians = Vector2(cam_dist_from_player, camera_zoom).angle()
-		var cam_angle_degrees = rad2deg(cam_angle_radians)
-		var new_cam_angle = -cam_angle_degrees + 20
 		$Camera_base.get_child(0).rotation_degrees.x = lerp($Camera_base.get_child(0).rotation_degrees.x, new_cam_angle, 0.1)
-	$Camera_base.translation.y = lerp($Camera_base.translation.y, camera_zoom, 0.1)
+		$Camera_base.translation.y = lerp($Camera_base.translation.y, camera_zoom, 0.1)
+	elif camera_mode == CAMERA_MODE_MOUSE:
+		$Camera_base.get_child(0).rotation_degrees.x = new_cam_angle
+		$Camera_base.translation.y = camera_zoom
 		
 
 
