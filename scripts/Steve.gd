@@ -12,10 +12,15 @@ const SPRINT_SPEED = 35
 const ACCELERATION = 5
 
 # CAMERA
-var camera_zoom = 50
-const CAMERA_MAX_ZOOM = 40
+var camera_zoom = 15
+const CAMERA_MAX_ZOOM = 30
 const CAMERA_MIN_ZOOM = 5
 var cameraTargetAngle = 0.0
+const CAM_MAX_ROTATE_SPEED = 5
+var cam_rotate_speed = 0
+const CAM_ROTATE_ACCELERATION = 4
+const CAM_ROTATE_DECELERATION = 20
+const CAM_ROTATE_STARTING_SPEED = 1
 
 # BULLET COLLISION
 const BOOM_SPEED = 120
@@ -94,29 +99,41 @@ func _physics_process(delta):
 		
 	# CAMERA
 	# ROTATE CAMERA LEFT
-	if Input.is_action_just_pressed("rotate_camera_left"):
-		if (cameraTargetAngle == 360):
-			$Camera_base.rotation_degrees.y = 0
-			cameraTargetAngle = 45
-		else:
-			cameraTargetAngle += 45
+	if Input.is_action_pressed("rotate_camera_left"):
+		if(cam_rotate_speed < CAM_MAX_ROTATE_SPEED):
+			if cam_rotate_speed < CAM_ROTATE_STARTING_SPEED:
+				cam_rotate_speed = CAM_ROTATE_STARTING_SPEED
+			cam_rotate_speed += cam_rotate_speed * CAM_ROTATE_ACCELERATION * delta
 	
 	# ROTATE CAMERA RIGHT
-	if Input.is_action_just_pressed("rotate_camera_right"):
-		if (cameraTargetAngle == 0):
-			$Camera_base.rotation_degrees.y = 360
-			cameraTargetAngle = 315
-		else:
-			cameraTargetAngle -= 45
-		
+	elif Input.is_action_pressed("rotate_camera_right"):
+		if(cam_rotate_speed > -CAM_MAX_ROTATE_SPEED):
+			if cam_rotate_speed > -CAM_ROTATE_STARTING_SPEED:
+				cam_rotate_speed = -CAM_ROTATE_STARTING_SPEED
+			cam_rotate_speed += cam_rotate_speed * CAM_ROTATE_ACCELERATION * delta
+	
+	# DECELERATE CAMERA BACK TO IDLE
+	elif cam_rotate_speed < 0:
+		cam_rotate_speed += -cam_rotate_speed * CAM_ROTATE_DECELERATION * delta
+	elif cam_rotate_speed > 0:
+		cam_rotate_speed -= cam_rotate_speed * CAM_ROTATE_DECELERATION * delta
+	
 	# ZOOM
-	if Input.is_action_just_released("zoom_out"):
+	if Input.is_action_just_released("scroll_out"):
 		if(camera_zoom < CAMERA_MAX_ZOOM):
-			camera_zoom += camera_zoom/5
-	elif Input.is_action_just_released("zoom_in"):
+			camera_zoom += camera_zoom * 0.2
+	elif Input.is_action_just_released("scroll_in"):
 		if(camera_zoom > CAMERA_MIN_ZOOM):
-			camera_zoom -= camera_zoom/5
-		
+			camera_zoom -= camera_zoom * 0.2
+	if Input.is_action_pressed("zoom_in"):
+		if(camera_zoom > CAMERA_MIN_ZOOM):
+			camera_zoom -= camera_zoom * 0.05
+	if Input.is_action_pressed("zoom_out"):
+		if(camera_zoom < CAMERA_MAX_ZOOM):
+			camera_zoom += camera_zoom * 0.05
+	
+	# APPLY CAMERA ANGLE AND ZOOM
+	cameraTargetAngle += cam_rotate_speed
 	$Camera_base.translation.y = lerp($Camera_base.translation.y, camera_zoom, 0.1)
 	$Camera_base.rotation_degrees.y = lerp($Camera_base.rotation_degrees.y, cameraTargetAngle, 0.1)
 	var cam_dist_from_player = 10
