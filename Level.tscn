@@ -35,7 +35,7 @@ mesh = SubResource( 5 )
 material/0 = null
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0128679, 1.18644, -3.9731 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0128679, 1.18644, 54.3234 )
 script = ExtResource( 2 )
 
 [node name="Camera_base" type="Spatial" parent="Player"]
@@ -47,6 +47,7 @@ script = ExtResource( 2 )
 [node name="camera" type="Camera" parent="Player/Camera_base/lever/arm"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10 )
 environment = ExtResource( 3 )
+far = 200.0
 
 [node name="player_collision_area" type="Area" parent="Player"]
 
@@ -60,6 +61,6 @@ shadow_enabled = true
 [node name="Game_walls" parent="." instance=ExtResource( 5 )]
 
 [node name="enemy" parent="." instance=ExtResource( 6 )]
-transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 1, 28 )
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 1, -37.5255 )
 
 [connection signal="body_entered" from="Player/player_collision_area" to="Player" method="_on_player_collision_area_body_entered"]

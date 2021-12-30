@@ -43,7 +43,6 @@ func _input(event):
 		$Camera_base.rotate_y(deg2rad(-event.relative.x*MOUSE_SENSITIVITY))
 		var changev=-event.relative.y * MOUSE_SENSITIVITY
 		var rotation_state = $Camera_base.get_node("lever").get_node("arm").rotation_degrees.x
-		print(rotation_state)
 		if (rotation_state < mouse_camera_max_angle and changev > 0 ) or (rotation_state > mouse_camera_min_angle and changev < 0):
 			$Camera_base.get_node("lever").get_node("arm").rotate_x(deg2rad(changev))
 		
